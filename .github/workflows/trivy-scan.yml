@@ -34,3 +34,9 @@ jobs:
         format: 'table'
         exit-code: '1'
         ignore-unfixed: true
+
+    - name: Upload Docker image as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: docker-image
+        path: my-fastapi-app
