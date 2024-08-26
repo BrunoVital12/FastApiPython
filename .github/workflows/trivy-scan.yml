@@ -1,4 +1,4 @@
-name: Trivy Scan and Push to Docker Hub
+name: Trivy Scan
 
 on:
   push:
@@ -34,29 +34,3 @@ jobs:
         format: 'table'
         exit-code: '1'
         ignore-unfixed: true
-
-    - name: Tag Docker image
-      run: |
-        docker tag my-fastapi-app:latest ${{ secrets.DOCKER_USERNAME }}/my-fastapi-app:latest
-      
-    - name: Push Docker image to Docker Hub
-      run: |
-        docker push ${{ secrets.DOCKER_USERNAME }}/my-fastapi-app:latest
-
-  sonarcloud:
-    name: SonarCloud Analysis
-    runs-on: ubuntu-latest
-    steps:
-    - name: Check out the repository
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-
-    - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@v1.5
-      with:
-        args: >
-          -Dsonar.projectKey=BrunoVital12_FastApiPython
-          -Dsonar.organization=BrunoVital12
-          -Dsonar.host.url=https://sonarcloud.io
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
