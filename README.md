@@ -1,6 +1,7 @@
 # Hello World com FastAPI
 
 Este é um projeto básico de "Hello World" usando o FastAPI em Python. O gerenciamento de dependências é feito com Poetry e o ambiente é configurado com pipx.
+GitHub Actions configurado para passar pelos testes do Trivy e SonarCloud, passado dos testes o container é lançado no DockerHub. 
 
 ## Instalação e Execução
 
