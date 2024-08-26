@@ -27,6 +27,9 @@ jobs:
     - name: Build Docker image
       run: docker build -t my-fastapi-app .
 
+    - name: List Docker images
+      run: docker images
+
     - name: Run Trivy vulnerability scan
       uses: aquasecurity/trivy-action@master
       with:
@@ -35,13 +38,31 @@ jobs:
         exit-code: '1'
         ignore-unfixed: true
 
+    - name: Save Docker image as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: docker-image
+        path: |
+          $(docker save my-fastapi-app | tee /tmp/my-fastapi-app.tar | cat)
+      
   build-and-push:
     runs-on: ubuntu-latest
     needs: trivy-scan
-    if: success()  # Esse job só será executado se o job anterior for bem-sucedido
+    if: success()
     steps:
     - name: Check out the repository
       uses: actions/checkout@v3
+
+    - name: Download Docker image artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: docker-image
+
+    - name: Load Docker image
+      run: docker load -i my-fastapi-app.tar
+
+    - name: List Docker images after load
+      run: docker images
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
