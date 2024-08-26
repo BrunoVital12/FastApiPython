@@ -1,4 +1,4 @@
-name: Trivy Scan
+name: Trivy Scan and Push to Docker Hub
 
 on:
   push:
@@ -34,3 +34,11 @@ jobs:
         format: 'table'
         exit-code: '1'
         ignore-unfixed: true
+
+    - name: Tag Docker image
+      run: |
+        docker tag my-fastapi-app:latest ${DOCKER_USERNAME}/my-fastapi-app:latest
+
+    - name: Push Docker image to Docker Hub
+      run: |
+        docker push ${DOCKER_USERNAME}/my-fastapi-app:latest
