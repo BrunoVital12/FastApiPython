@@ -37,8 +37,8 @@ jobs:
 
     - name: Tag Docker image
       run: |
-        docker tag my-fastapi-app:latest ${DOCKER_USERNAME}/my-fastapi-app:latest
-
+        docker tag my-fastapi-app:latest ${{ secrets.DOCKER_USERNAME }}/my-fastapi-app:latest
+      
     - name: Push Docker image to Docker Hub
       run: |
-        docker push ${DOCKER_USERNAME}/my-fastapi-app:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/my-fastapi-app:latest
