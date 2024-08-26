@@ -1,4 +1,4 @@
-name: Docker Build, Push and Trivy Scan
+name: SonarCloud, Trivy Scan, Docker Build and Push 
 
 on:
   push:
@@ -7,10 +7,36 @@ on:
   pull_request:
     branches:
       - main
+    types: [opened, synchronize, reopened]
 
 jobs:
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adoptium'
+          java-version: '17'
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: > 
+            -Dsonar.projectKey=BrunoVital12_FastApiPython 
+            -Dsonar.organization=brunovital12 
+
   trivy-scan:
     runs-on: ubuntu-latest
+    needs: sonarcloud  # Run this job after the SonarCloud job
     steps:
     - name: Check out the repository
       uses: actions/checkout@v3
@@ -82,4 +108,3 @@ jobs:
     - name: Push Docker image to Docker Hub
       run: |
         docker push ${{ secrets.DOCKER_USERNAME }}/my-fastapi-app:latest
-          
