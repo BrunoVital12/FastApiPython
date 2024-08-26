@@ -1,4 +1,4 @@
-name: Docker Build, Push and Trivy Scan
+name: Build and Scan
 
 on:
   push:
@@ -7,10 +7,27 @@ on:
   pull_request:
     branches:
       - main
+    types: [opened, synchronize, reopened]
 
 jobs:
-  trivy-scan:
+  sonarcloud:
+    name: SonarCloud Analysis
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  trivy-scan:
+    name: Trivy Scan
+    runs-on: ubuntu-latest
+    needs: sonarcloud
+    if: success()  # This job will run only if the sonarcloud job succeeds
     steps:
     - name: Check out the repository
       uses: actions/checkout@v3
@@ -48,9 +65,10 @@ jobs:
         path: /tmp/artifacts/my-fastapi-app.tar.gz
 
   build-and-push:
+    name: Build and Push Docker Image
     runs-on: ubuntu-latest
     needs: trivy-scan
-    if: success()
+    if: success()  # This job will run only if the trivy-scan job succeeds
     steps:
     - name: Check out the repository
       uses: actions/checkout@v3
