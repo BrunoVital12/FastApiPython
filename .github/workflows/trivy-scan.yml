@@ -69,7 +69,7 @@ jobs:
         curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
         unzip sonar-scanner.zip -d ~/sonar-scanner
         ls -l ~/sonar-scanner/sonar-scanner-4.7.0.2747-linux/bin
-        export PATH=$PATH:~/sonar-scanner/sonar-scanner-4.7.0.2747-linux/bin
+        export PATH=~/sonar-scanner/sonar-scanner-4.7.0.2747-linux/bin:$PATH
         echo "PATH=$PATH"
 
     - name: Verify SonarCloud Scanner Installation
@@ -78,9 +78,8 @@ jobs:
 
     - name: SonarCloud Analysis
       run: |
-        export PATH=$PATH:~/sonar-scanner/sonar-scanner-4.7.0.2747-linux/bin
         sonar-scanner \
             -Dsonar.projectKey=BrunoVital12_FastApiPython \
-          -Dsonar.organization=BrunoVital12 \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.organization=BrunoVital12 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
