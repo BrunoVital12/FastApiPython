@@ -20,5 +20,5 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
             args: > 
-                -Dsonar.projectKey=BrunoVital12_FastApiPython \
-                -Dsonar.organization=brunovital12 \
+                -Dsonar.projectKey=BrunoVital12_FastApiPython 
+                -Dsonar.organization=brunovital12 
