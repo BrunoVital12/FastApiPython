@@ -68,12 +68,12 @@ jobs:
       run: |
         curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
         unzip sonar-scanner.zip -d ~/sonar-scanner
+        ls -l ~/sonar-scanner/sonar-scanner-4.7.0.2747-linux/bin
         export PATH=$PATH:~/sonar-scanner/sonar-scanner-4.7.0.2747-linux/bin
-        echo "PATH=$PATH"  # Verifique o PATH
+        echo "PATH=$PATH"
 
     - name: Verify SonarCloud Scanner Installation
       run: |
-        echo "PATH=$PATH"  # Verifique o PATH
         sonar-scanner --version
 
     - name: SonarCloud Analysis
