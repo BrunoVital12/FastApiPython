@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "my-python-api.name" -}}
+{{- define "my-fast-api.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "my-python-api.fullname" -}}
+{{- define "my-fast-api.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "my-python-api.chart" -}}
+{{- define "my-fast-api.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "my-python-api.labels" -}}
-helm.sh/chart: {{ include "my-python-api.chart" . }}
-{{ include "my-python-api.selectorLabels" . }}
+{{- define "my-fast-api.labels" -}}
+helm.sh/chart: {{ include "my-fast-api.chart" . }}
+{{ include "my-fast-api.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "my-python-api.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "my-python-api.name" . }}
+{{- define "my-fast-api.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "my-fast-api.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "my-python-api.serviceAccountName" -}}
+{{- define "my-fast-api.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "my-python-api.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "my-fast-api.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

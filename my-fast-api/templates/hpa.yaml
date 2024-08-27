@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "my-python-api.fullname" . }}
+  name: {{ include "my-fast-api.fullname" . }}
   labels:
-    {{- include "my-python-api.labels" . | nindent 4 }}
+    {{- include "my-fast-api.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "my-python-api.fullname" . }}
+    name: {{ include "my-fast-api.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
