@@ -23,8 +23,10 @@ securityContext: {}
 
 service:
   type: NodePort
-  port: 8000       # Porta que o serviço expõe
-  targetPort: 8000 # Porta que o contêiner está ouvindo
+  port: 80               # Porta que o serviço expõe
+  targetPort: 8000       # Porta que o contêiner está ouvindo
+  protocol: TCP
+  nodePort: 30080        # Porta do NodePort para acesso externo
 
 
 ingress:
