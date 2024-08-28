@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: brunovital12/my-fastapi-app
+  repository: docker.io/brunovital12/my-fastapi-app
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
@@ -42,7 +42,7 @@ securityContext: {}
 service:
   type: NodePort
   port: 80
-  targetPort: 80
+  targetPort: 8000
 
 
 ingress:
@@ -80,7 +80,11 @@ livenessProbe:
 readinessProbe:
   httpGet:
     path: /
-    port: http
+    port: 8000
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+
 
 autoscaling:
   enabled: false
