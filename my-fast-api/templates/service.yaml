@@ -11,7 +11,7 @@ spec:
       targetPort: 8000       # Porta que o contêiner está ouvindo
       protocol: TCP
       name: http             # Nome da porta deve ser único
-      nodePort: 30080        # Porta do NodePort para acesso externo
+      nodePort: 30081        # Porta do NodePort para acesso externo
     - port: 443              # Porta para HTTPS (opcional, se estiver usando HTTPS)
       targetPort: 8000       # Porta que o contêiner está ouvindo
       protocol: TCP
