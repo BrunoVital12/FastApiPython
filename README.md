@@ -34,22 +34,29 @@ GitHub Actions configurado para passar pelos testes do Trivy e SonarCloud, passa
         return {"Hello": "World"}
     ```
 
-5. **Execute o Projeto**: Ative o ambiente virtual:
-    ```
-    poetry shell
-    ```
+5. **Crie um arquivo Dockerfile**: Com o seguinte conteúdo dentro do Dockerfile:
+![alt text](image.png)
+```FROM python:3.12-alpine
 
-    Inicie a aplicação
-      ```
-    fastapi dev x/app.py
+WORKDIR /app
 
-    ```
+RUN apk add --no-cache build-base
 
-7. **Acesse a Aplicação**: Abra o navegador e acesse:
-    ```
-    http://127.0.0.1:8000
-    ```
-    Você verá uma resposta JSON com `{"Hello": "World"}`.
-   
+COPY pyproject.toml poetry.lock /app/
+
+
+RUN pip install --no-cache-dir poetry \
+    && poetry config virtualenvs.create false \
+    && poetry install --no-root --only main \
+    && apk del build-base  # Remover pacotes de build após a instalação
+
+
+COPY projeto_compass /app/projeto_compass
+
+
+EXPOSE 8000
+
+CMD ["uvicorn", "projeto_compass.app:app", "--host", "0.0.0.0", "--port", "8000"]
+```
 
 
